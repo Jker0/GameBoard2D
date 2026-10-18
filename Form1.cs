@@ -15,6 +15,7 @@ namespace GameBoard2D
         public Form1()
         {
             InitializeComponent();
+            BoardCanvas boardCanvas = new BoardCanvas(this.pictureBox1);
         }
     }
 }

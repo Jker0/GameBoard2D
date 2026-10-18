@@ -16,7 +16,8 @@ namespace GameBoard2D
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Form mainForm = new Form1();
+            Application.Run(mainForm);        
         }
     }
 }
