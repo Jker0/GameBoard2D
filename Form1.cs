@@ -21,17 +21,17 @@ namespace GameBoard2D
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            BoardCanvas.UpdateCanvas();
+            //BoardCanvas.UpdateCanvas();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(BoardCanvas[0,3].ToString());
+            BoardCanvas.UpdateCanvas();
         }
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
-            MessageBox.Show(BoardCanvas.DrawCellByPoint(e.Location, 1).ToString());
+            BoardCanvas.DrawCellByPoint(e.Location, Color.White);
         }
     }
 }
