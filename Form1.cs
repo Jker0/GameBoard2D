@@ -31,7 +31,7 @@ namespace GameBoard2D
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
-            BoardCanvas.DrawCellByPoint(e.Location, Color.White);
+            BoardCanvas.DrawCellByPoint(e.Location, 2);
         }
     }
 }

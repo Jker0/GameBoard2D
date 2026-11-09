@@ -16,8 +16,8 @@ namespace GameBoard2D
         private const int FIELD_LEFT_OFFSET_PIXELS = 30;            // Отступ в пикселях от левого края формы
         private const int FIELD_TOP_OFFSET_PIXELS = 15;             // Отступ в пикселях от верхнего края формы
 
-        Graphics Graphic { get; set; }
-        private Color[] Colors { get; set; } = {Color.Black, Color.White, Color.Red, Color.Green};
+        Graphics Graphic { get; set; }      
+        private List<Color> Colors { get; set; } = new List<Color>{Color.Black, Color.White, Color.Red, Color.Green}; 
 
         private Color[,] Cells { get; set; } = new Color[ROWS_NUMBER, COLS_NUMBER];
         
@@ -55,17 +55,36 @@ namespace GameBoard2D
         /// </summary>
         /// <param name="point"> номер ячейки в массиве </param>
         /// <param name="color"> цвет заливки </param>
-        public void DrawCellByPoint(Point point, Color color)
+        public void DrawCellByPoint(Point point, int color)
         {
+            Color ColorPen = getColor(color);
+
             Point TargetCell = FindCell(point);
             if (TargetCell.X == -1 || TargetCell.Y == -1)
                 return;
 
-            Cells[TargetCell.X, TargetCell.Y] = color;
+            Cells[TargetCell.X, TargetCell.Y] = ColorPen;
             Rectangle rectangle = FindRectangle(point);
 
-            Graphic.FillRectangle(new SolidBrush(color), FindRectangle((Point)TargetCell));
+            Graphic.FillRectangle(new SolidBrush(ColorPen), FindRectangle((Point)TargetCell));
             PBCanvas.Refresh();
+        }
+
+        public void SetColors(List<Color> colors)
+        {
+            if (colors.Count <= 2)
+                return;
+            Colors = colors;
+        }
+
+        /// Private
+
+        private Color getColor(int i)
+        {
+            if(i >= Colors.Count)
+                return Colors[0];   
+
+            return Colors[i]; 
         }
 
         private Point FindCell(Point point)
@@ -105,7 +124,7 @@ namespace GameBoard2D
         {
             for (int row = 0; row <= ROWS_NUMBER; row++)
             {
-                Graphic.DrawLine(Pens.Cyan,
+                Graphic.DrawLine(new Pen(Colors[1], 2),
                     new Point(FIELD_LEFT_OFFSET_PIXELS, FIELD_TOP_OFFSET_PIXELS + row * CELL_SIZE_PIXELS),
                     new Point(FIELD_LEFT_OFFSET_PIXELS + CELL_SIZE_PIXELS * ROWS_NUMBER, FIELD_TOP_OFFSET_PIXELS + row * CELL_SIZE_PIXELS)
                 );
@@ -113,7 +132,7 @@ namespace GameBoard2D
 
             for (int col = 0; col <= COLS_NUMBER; col++)
             {
-                Graphic.DrawLine(Pens.Cyan,
+                Graphic.DrawLine(new Pen(Colors[1], 2),
                     new Point(FIELD_LEFT_OFFSET_PIXELS + col * CELL_SIZE_PIXELS, FIELD_TOP_OFFSET_PIXELS),
                     new Point(FIELD_LEFT_OFFSET_PIXELS + col * CELL_SIZE_PIXELS, FIELD_TOP_OFFSET_PIXELS + CELL_SIZE_PIXELS * COLS_NUMBER)
                 );
