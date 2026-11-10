@@ -24,14 +24,26 @@ namespace GameBoard2D
             //BoardCanvas.UpdateCanvas();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void ClearBt_Click(object sender, EventArgs e)
         {
-            BoardCanvas.UpdateCanvas();
+            BoardCanvas.ClearCanvas();
         }
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
             BoardCanvas.DrawCellByPoint(e.Location, 2);
+        }
+
+        private void TestBt_Click(object sender, EventArgs e)
+        {
+            for(int i = 0; i < 10; i++)
+                for (int j = 0; j < 10; j++)
+                {
+                    if (BoardCanvas[i,j] != 0)
+                        BoardCanvas[i, j] = 1;
+                }
+
+            BoardCanvas.UpdateCanvas();
         }
     }
 }

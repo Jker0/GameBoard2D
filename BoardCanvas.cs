@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -8,19 +9,21 @@ using System.Windows.Forms;
 
 namespace GameBoard2D
 {
-    internal class BoardCanvas
+    internal class BoardCanvas : IEnumerable
     {
         private const int CELL_SIZE_PIXELS = 30;                    // Размер клетки игрового поля, в пикселях
-        private const int ROWS_NUMBER = 15;                         // Количество рядов в игровом поле
-        private const int COLS_NUMBER = 15;                         // Количество столбцов в игровом поле
+        private const int PEN_SIZE_PIXELS = 2;                      // Размер карандаша рисующего сетку
+        private const int ROWS_NUMBER = 10;                         // Количество рядов в игровом поле
+        private const int COLS_NUMBER = 20;                         // Количество столбцов в игровом поле
         private const int FIELD_LEFT_OFFSET_PIXELS = 30;            // Отступ в пикселях от левого края формы
         private const int FIELD_TOP_OFFSET_PIXELS = 15;             // Отступ в пикселях от верхнего края формы
 
         Graphics Graphic { get; set; }      
         private List<Color> Colors { get; set; } = new List<Color>{Color.Black, Color.White, Color.Red, Color.Green}; 
 
-        private Color[,] Cells { get; set; } = new Color[ROWS_NUMBER, COLS_NUMBER];
-        
+        private int[,] Cells { get; set; } = new int[ROWS_NUMBER, COLS_NUMBER];
+        private int[,] OldCells { get; set; } = new int[ROWS_NUMBER, COLS_NUMBER];
+
 
         /// <summary>
         /// Main board
@@ -39,13 +42,30 @@ namespace GameBoard2D
             UpdateGrid();
         }
 
-        public Color this[int i, int j]
+        public int this[int i, int j]
         {
             get { return Cells[i, j]; }
             set { Cells[i, j] = value; }
         }
 
+        public IEnumerator GetEnumerator() => Cells.GetEnumerator();
+
         public void UpdateCanvas()
+        {
+            for (int row = 0; row < ROWS_NUMBER; row++)
+                for (int cols = 0; cols < COLS_NUMBER; cols++)
+                {
+                    int indxColor = Cells[row, cols];
+                    if (indxColor != OldCells[row, cols])
+                    {                        
+                        Graphic.FillRectangle(new SolidBrush(getColor(indxColor)), FindRectangle(new Point(cols, row)));
+                        OldCells[row, cols] = indxColor;
+                    }
+                }
+            PBCanvas.Refresh();
+        }
+
+        public void ClearCanvas()
         {
             UpdateGrid();
         }
@@ -63,8 +83,7 @@ namespace GameBoard2D
             if (TargetCell.X == -1 || TargetCell.Y == -1)
                 return;
 
-            Cells[TargetCell.X, TargetCell.Y] = ColorPen;
-            Rectangle rectangle = FindRectangle(point);
+            Cells[TargetCell.Y, TargetCell.X] = color;
 
             Graphic.FillRectangle(new SolidBrush(ColorPen), FindRectangle((Point)TargetCell));
             PBCanvas.Refresh();
@@ -87,12 +106,17 @@ namespace GameBoard2D
             return Colors[i]; 
         }
 
+        /// <summary>
+        /// Возвращает координаты ячейки в массиве по переданным координатам поля
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
         private Point FindCell(Point point)
         {
             int X = (point.X - FIELD_LEFT_OFFSET_PIXELS) / CELL_SIZE_PIXELS;
             int Y = (point.Y - FIELD_TOP_OFFSET_PIXELS) / CELL_SIZE_PIXELS;
 
-            if(point.X - FIELD_LEFT_OFFSET_PIXELS < 0 || X >= ROWS_NUMBER || point.Y - FIELD_TOP_OFFSET_PIXELS < 0 || Y >= COLS_NUMBER)
+            if(point.X - FIELD_LEFT_OFFSET_PIXELS < 0 || X >= COLS_NUMBER || point.Y - FIELD_TOP_OFFSET_PIXELS < 0 || Y >= ROWS_NUMBER)
                 return new Point(-1, -1);
 
             return new Point(X, Y);
@@ -106,10 +130,11 @@ namespace GameBoard2D
         /// <returns></returns>
         private Rectangle FindRectangle(Point targetCell)
         {
-            int X0 = (targetCell.X * CELL_SIZE_PIXELS) + FIELD_LEFT_OFFSET_PIXELS;
-            int Y0 = (targetCell.Y * CELL_SIZE_PIXELS) + FIELD_TOP_OFFSET_PIXELS;
+            int penSizePixels = PEN_SIZE_PIXELS / 2; // решетка
+            int X0 = (targetCell.X * CELL_SIZE_PIXELS) + FIELD_LEFT_OFFSET_PIXELS + penSizePixels;
+            int Y0 = (targetCell.Y * CELL_SIZE_PIXELS) + FIELD_TOP_OFFSET_PIXELS + penSizePixels;
 
-            return new Rectangle(X0, Y0, CELL_SIZE_PIXELS, CELL_SIZE_PIXELS);
+            return new Rectangle(X0, Y0, CELL_SIZE_PIXELS - penSizePixels, CELL_SIZE_PIXELS - penSizePixels);
         }
 
         private void UpdateGrid()
@@ -124,17 +149,17 @@ namespace GameBoard2D
         {
             for (int row = 0; row <= ROWS_NUMBER; row++)
             {
-                Graphic.DrawLine(new Pen(Colors[1], 2),
+                Graphic.DrawLine(new Pen(Colors[1], PEN_SIZE_PIXELS),
                     new Point(FIELD_LEFT_OFFSET_PIXELS, FIELD_TOP_OFFSET_PIXELS + row * CELL_SIZE_PIXELS),
-                    new Point(FIELD_LEFT_OFFSET_PIXELS + CELL_SIZE_PIXELS * ROWS_NUMBER, FIELD_TOP_OFFSET_PIXELS + row * CELL_SIZE_PIXELS)
+                    new Point(FIELD_LEFT_OFFSET_PIXELS + CELL_SIZE_PIXELS * COLS_NUMBER, FIELD_TOP_OFFSET_PIXELS + row * CELL_SIZE_PIXELS)
                 );
             }
 
             for (int col = 0; col <= COLS_NUMBER; col++)
             {
-                Graphic.DrawLine(new Pen(Colors[1], 2),
+                Graphic.DrawLine(new Pen(Colors[2], PEN_SIZE_PIXELS),
                     new Point(FIELD_LEFT_OFFSET_PIXELS + col * CELL_SIZE_PIXELS, FIELD_TOP_OFFSET_PIXELS),
-                    new Point(FIELD_LEFT_OFFSET_PIXELS + col * CELL_SIZE_PIXELS, FIELD_TOP_OFFSET_PIXELS + CELL_SIZE_PIXELS * COLS_NUMBER)
+                    new Point(FIELD_LEFT_OFFSET_PIXELS + col * CELL_SIZE_PIXELS, FIELD_TOP_OFFSET_PIXELS + CELL_SIZE_PIXELS * ROWS_NUMBER)
                 );
             }
         }
