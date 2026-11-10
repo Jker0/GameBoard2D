@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -65,9 +66,31 @@ namespace GameBoard2D
             PBCanvas.Refresh();
         }
 
+        public void RefreshCanvas()
+        {
+            UpdateGrid();
+            for (int row = 0; row < ROWS_NUMBER; row++)
+                for (int cols = 0; cols < COLS_NUMBER; cols++)
+                {
+                    int indxColor = Cells[row, cols];
+                    if (indxColor != 0)
+                    {
+                        Graphic.FillRectangle(new SolidBrush(getColor(indxColor)), FindRectangle(new Point(cols, row)));
+                        OldCells[row, cols] = indxColor;
+                    }
+                }
+            PBCanvas.Refresh();
+        }
+
         public void ClearCanvas()
         {
             UpdateGrid();
+            for (int row = 0; row < ROWS_NUMBER; row++)
+                for (int cols = 0; cols < COLS_NUMBER; cols++)
+                {
+                    Cells[row, cols] = 0;
+                    OldCells[row, cols] = 0;
+                }    
         }
 
         /// <summary>

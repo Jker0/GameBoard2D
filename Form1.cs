@@ -45,5 +45,10 @@ namespace GameBoard2D
 
             BoardCanvas.UpdateCanvas();
         }
+
+        private void RefreshBt_Click(object sender, EventArgs e)
+        {
+            BoardCanvas.RefreshCanvas();
+        }
     }
 }

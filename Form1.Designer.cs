@@ -31,6 +31,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.ClearBt = new System.Windows.Forms.Button();
             this.TestBt = new System.Windows.Forms.Button();
+            this.RefreshBt = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -56,7 +57,7 @@
             // 
             // TestBt
             // 
-            this.TestBt.Location = new System.Drawing.Point(1110, 749);
+            this.TestBt.Location = new System.Drawing.Point(1110, 697);
             this.TestBt.Name = "TestBt";
             this.TestBt.Size = new System.Drawing.Size(112, 39);
             this.TestBt.TabIndex = 2;
@@ -64,11 +65,22 @@
             this.TestBt.UseVisualStyleBackColor = true;
             this.TestBt.Click += new System.EventHandler(this.TestBt_Click);
             // 
+            // RefreshBt
+            // 
+            this.RefreshBt.Location = new System.Drawing.Point(1110, 758);
+            this.RefreshBt.Name = "RefreshBt";
+            this.RefreshBt.Size = new System.Drawing.Size(112, 36);
+            this.RefreshBt.TabIndex = 3;
+            this.RefreshBt.Text = "Refresh";
+            this.RefreshBt.UseVisualStyleBackColor = true;
+            this.RefreshBt.Click += new System.EventHandler(this.RefreshBt_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1286, 890);
+            this.Controls.Add(this.RefreshBt);
             this.Controls.Add(this.TestBt);
             this.Controls.Add(this.ClearBt);
             this.Controls.Add(this.pictureBox1);
@@ -85,6 +97,7 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button ClearBt;
         private System.Windows.Forms.Button TestBt;
+        private System.Windows.Forms.Button RefreshBt;
     }
 }
 
