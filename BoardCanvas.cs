@@ -180,7 +180,7 @@ namespace GameBoard2D
 
             for (int col = 0; col <= COLS_NUMBER; col++)
             {
-                Graphic.DrawLine(new Pen(Colors[2], PEN_SIZE_PIXELS),
+                Graphic.DrawLine(new Pen(Colors[1], PEN_SIZE_PIXELS),
                     new Point(FIELD_LEFT_OFFSET_PIXELS + col * CELL_SIZE_PIXELS, FIELD_TOP_OFFSET_PIXELS),
                     new Point(FIELD_LEFT_OFFSET_PIXELS + col * CELL_SIZE_PIXELS, FIELD_TOP_OFFSET_PIXELS + CELL_SIZE_PIXELS * ROWS_NUMBER)
                 );
