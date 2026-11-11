@@ -1,4 +1,4 @@
-﻿namespace GameBoard2D
+﻿namespace GameBoard2D_Jker0
 {
     partial class Form1
     {

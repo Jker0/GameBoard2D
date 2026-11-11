@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace GameBoard2D
+namespace GameBoard2D_Jker0
 {
     public partial class Form1 : Form
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace GameBoard2D
+namespace GameBoard2D_Jker0
 {
     internal static class Program
     {

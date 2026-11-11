@@ -8,22 +8,22 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace GameBoard2D
+namespace GameBoard2D_Jker0
 {
     internal class BoardCanvas : IEnumerable
     {
-        private const int CELL_SIZE_PIXELS = 30;                    // Размер клетки игрового поля, в пикселях
-        private const int PEN_SIZE_PIXELS = 2;                      // Размер карандаша рисующего сетку
-        private const int ROWS_NUMBER = 10;                         // Количество рядов в игровом поле
-        private const int COLS_NUMBER = 20;                         // Количество столбцов в игровом поле
-        private const int FIELD_LEFT_OFFSET_PIXELS = 30;            // Отступ в пикселях от левого края формы
-        private const int FIELD_TOP_OFFSET_PIXELS = 15;             // Отступ в пикселях от верхнего края формы
+        private  int CELL_SIZE_PIXELS = 30;                    // Размер клетки игрового поля, в пикселях
+        private  int PEN_SIZE_PIXELS = 2;                      // Размер карандаша рисующего сетку
+        private  int ROWS_NUMBER = 10;                         // Количество рядов в игровом поле
+        private  int COLS_NUMBER = 20;                         // Количество столбцов в игровом поле
+        private  int FIELD_LEFT_OFFSET_PIXELS = 30;            // Отступ в пикселях от левого края формы
+        private  int FIELD_TOP_OFFSET_PIXELS = 15;             // Отступ в пикселях от верхнего края формы
 
         Graphics Graphic { get; set; }      
-        private List<Color> Colors { get; set; } = new List<Color>{Color.Black, Color.White, Color.Red, Color.Green}; 
+        private List<Color> Colors { get; set; } = new List<Color>{Color.Black, Color.White, Color.Red, Color.Green};
 
-        private int[,] Cells { get; set; } = new int[ROWS_NUMBER, COLS_NUMBER];
-        private int[,] OldCells { get; set; } = new int[ROWS_NUMBER, COLS_NUMBER];
+        private int[,] Cells { get; set; }
+        private int[,] OldCells { get; set; }
 
 
         /// <summary>
@@ -33,12 +33,36 @@ namespace GameBoard2D
 
         public BoardCanvas(PictureBox pbCanvas)
         {
+            Cells = new int[ROWS_NUMBER, COLS_NUMBER];
+            OldCells = new int[ROWS_NUMBER, COLS_NUMBER];
+
             PBCanvas = pbCanvas;            
 
             Bitmap buf;
             buf = new Bitmap(PBCanvas.Width, PBCanvas.Height);
             PBCanvas.Image = buf;
             Graphic = Graphics.FromImage(PBCanvas.Image);
+
+            UpdateGrid();
+        }
+
+        public void InitPBCanvas(
+            int _CELL_SIZE_PIXELS = 30, 
+            int _PEN_SIZE_PIXELS = 2, 
+            int _ROWS_NUMBER = 10, 
+            int _COLS_NUMBER = 20,
+            int _FIELD_LEFT_OFFSET_PIXELS = 30,
+            int _FIELD_TOP_OFFSET_PIXELS = 15)
+        {
+            CELL_SIZE_PIXELS = _CELL_SIZE_PIXELS;
+            PEN_SIZE_PIXELS = _PEN_SIZE_PIXELS;
+            ROWS_NUMBER = _ROWS_NUMBER;
+            COLS_NUMBER = _COLS_NUMBER;
+            FIELD_LEFT_OFFSET_PIXELS = _FIELD_LEFT_OFFSET_PIXELS;
+            FIELD_TOP_OFFSET_PIXELS = _FIELD_TOP_OFFSET_PIXELS;
+
+            Cells = new int[ROWS_NUMBER, COLS_NUMBER];
+            OldCells = new int[ROWS_NUMBER, COLS_NUMBER];
 
             UpdateGrid();
         }
