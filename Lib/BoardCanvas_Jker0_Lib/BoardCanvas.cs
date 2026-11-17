@@ -3,7 +3,7 @@ using System.Collections;
 using System.Drawing;
 
 
-namespace GameBoard2D_Jker0
+namespace BoardCanvas_Jker0_Lib
 {
     internal class BoardCanvas : IEnumerable
     {
