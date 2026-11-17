@@ -1,0 +1,1 @@
+библиотека BoardCanvas_Jker0_Lib.
