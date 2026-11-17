@@ -1,50 +1,39 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Drawing;
-using System.Windows.Forms;
 
 
-namespace BoardCanvas_Jker0_Lib
+namespace GameBoard2D_Jker0
 {
     internal class BoardCanvas : IEnumerable
     {
-        private  int CELL_SIZE_PIXELS = 30;                    // Размер клетки игрового поля, в пикселях
-        private  int PEN_SIZE_PIXELS = 2;                      // Размер карандаша рисующего сетку
-        private  int ROWS_NUMBER = 10;                         // Количество рядов в игровом поле
-        private  int COLS_NUMBER = 20;                         // Количество столбцов в игровом поле
-        private  int FIELD_LEFT_OFFSET_PIXELS = 30;            // Отступ в пикселях от левого края формы
-        private  int FIELD_TOP_OFFSET_PIXELS = 15;             // Отступ в пикселях от верхнего края формы
+        private int CELL_SIZE_PIXELS = 30;                    // Размер клетки игрового поля, в пикселях
+        private int PEN_SIZE_PIXELS = 2;                      // Размер карандаша рисующего сетку
+        private int ROWS_NUMBER = 10;                         // Количество рядов в игровом поле
+        private int COLS_NUMBER = 20;                         // Количество столбцов в игровом поле
+        private int FIELD_LEFT_OFFSET_PIXELS = 30;            // Отступ в пикселях от левого края формы
+        private int FIELD_TOP_OFFSET_PIXELS = 15;             // Отступ в пикселях от верхнего края формы
 
-        Graphics Graphic { get; set; }      
-        private List<Color> Colors { get; set; } = new List<Color>{Color.Black, Color.White, Color.Red, Color.Green};
+        Graphics Graphic { get; set; }
+        private List<Color> Colors { get; set; } = new List<Color> { Color.Black, Color.White, Color.Red, Color.Green };
 
         private int[,] Cells { get; set; }
         private int[,] OldCells { get; set; }
 
-
-        /// <summary>
-        /// Main board
-        /// </summary>
-        PictureBox PBCanvas {  get; set; }  
-
-        public BoardCanvas(PictureBox pbCanvas)
+        public BoardCanvas(Image image)
         {
             Cells = new int[ROWS_NUMBER, COLS_NUMBER];
             OldCells = new int[ROWS_NUMBER, COLS_NUMBER];
 
-            PBCanvas = pbCanvas;            
-
-            Bitmap buf;
-            buf = new Bitmap(PBCanvas.Width, PBCanvas.Height);
-            PBCanvas.Image = buf;
-            Graphic = Graphics.FromImage(PBCanvas.Image);
+            Graphic = Graphics.FromImage(image);
 
             UpdateGrid();
         }
 
         public void InitPBCanvas(
-            int _CELL_SIZE_PIXELS = 30, 
-            int _PEN_SIZE_PIXELS = 2, 
-            int _ROWS_NUMBER = 10, 
+            int _CELL_SIZE_PIXELS = 30,
+            int _PEN_SIZE_PIXELS = 2,
+            int _ROWS_NUMBER = 10,
             int _COLS_NUMBER = 20,
             int _FIELD_LEFT_OFFSET_PIXELS = 30,
             int _FIELD_TOP_OFFSET_PIXELS = 15)
@@ -77,12 +66,11 @@ namespace BoardCanvas_Jker0_Lib
                 {
                     int indxColor = Cells[row, cols];
                     if (indxColor != OldCells[row, cols])
-                    {                        
+                    {
                         Graphic.FillRectangle(new SolidBrush(getColor(indxColor)), FindRectangle(new Point(cols, row)));
                         OldCells[row, cols] = indxColor;
                     }
                 }
-            PBCanvas.Refresh();
         }
 
         public void RefreshCanvas()
@@ -98,7 +86,6 @@ namespace BoardCanvas_Jker0_Lib
                         OldCells[row, cols] = indxColor;
                     }
                 }
-            PBCanvas.Refresh();
         }
 
         public void ClearCanvas()
@@ -109,7 +96,7 @@ namespace BoardCanvas_Jker0_Lib
                 {
                     Cells[row, cols] = 0;
                     OldCells[row, cols] = 0;
-                }    
+                }
         }
 
         /// <summary>
@@ -128,7 +115,6 @@ namespace BoardCanvas_Jker0_Lib
             Cells[TargetCell.Y, TargetCell.X] = color;
 
             Graphic.FillRectangle(new SolidBrush(ColorPen), FindRectangle((Point)TargetCell));
-            PBCanvas.Refresh();
         }
 
         public void SetColors(List<Color> colors)
@@ -142,10 +128,10 @@ namespace BoardCanvas_Jker0_Lib
 
         private Color getColor(int i)
         {
-            if(i >= Colors.Count)
-                return Colors[0];   
+            if (i >= Colors.Count)
+                return Colors[0];
 
-            return Colors[i]; 
+            return Colors[i];
         }
 
         /// <summary>
@@ -158,7 +144,7 @@ namespace BoardCanvas_Jker0_Lib
             int X = (point.X - FIELD_LEFT_OFFSET_PIXELS) / CELL_SIZE_PIXELS;
             int Y = (point.Y - FIELD_TOP_OFFSET_PIXELS) / CELL_SIZE_PIXELS;
 
-            if(point.X - FIELD_LEFT_OFFSET_PIXELS < 0 || X >= COLS_NUMBER || point.Y - FIELD_TOP_OFFSET_PIXELS < 0 || Y >= ROWS_NUMBER)
+            if (point.X - FIELD_LEFT_OFFSET_PIXELS < 0 || X >= COLS_NUMBER || point.Y - FIELD_TOP_OFFSET_PIXELS < 0 || Y >= ROWS_NUMBER)
                 return new Point(-1, -1);
 
             return new Point(X, Y);
@@ -183,7 +169,6 @@ namespace BoardCanvas_Jker0_Lib
         {
             Graphic.Clear(Colors[0]);
             DrawGrid();
-            PBCanvas.Refresh();
 
         }
 
