@@ -23,25 +23,14 @@ namespace GameBoard2D_Jker0
         private List<Color> Colors { get; set; } = new List<Color>{Color.Black, Color.White, Color.Red, Color.Green};
 
         private int[,] Cells { get; set; }
-        private int[,] OldCells { get; set; }
+        private int[,] OldCells { get; set; } 
 
-
-        /// <summary>
-        /// Main board
-        /// </summary>
-        PictureBox PBCanvas {  get; set; }  
-
-        public BoardCanvas(PictureBox pbCanvas)
+        public BoardCanvas(Image image)
         {
             Cells = new int[ROWS_NUMBER, COLS_NUMBER];
             OldCells = new int[ROWS_NUMBER, COLS_NUMBER];
 
-            PBCanvas = pbCanvas;            
-
-            Bitmap buf;
-            buf = new Bitmap(PBCanvas.Width, PBCanvas.Height);
-            PBCanvas.Image = buf;
-            Graphic = Graphics.FromImage(PBCanvas.Image);
+            Graphic = Graphics.FromImage(image);
 
             UpdateGrid();
         }
@@ -86,8 +75,7 @@ namespace GameBoard2D_Jker0
                         Graphic.FillRectangle(new SolidBrush(getColor(indxColor)), FindRectangle(new Point(cols, row)));
                         OldCells[row, cols] = indxColor;
                     }
-                }
-            PBCanvas.Refresh();
+                }            
         }
 
         public void RefreshCanvas()
@@ -102,8 +90,7 @@ namespace GameBoard2D_Jker0
                         Graphic.FillRectangle(new SolidBrush(getColor(indxColor)), FindRectangle(new Point(cols, row)));
                         OldCells[row, cols] = indxColor;
                     }
-                }
-            PBCanvas.Refresh();
+                }         
         }
 
         public void ClearCanvas()
@@ -132,8 +119,7 @@ namespace GameBoard2D_Jker0
 
             Cells[TargetCell.Y, TargetCell.X] = color;
 
-            Graphic.FillRectangle(new SolidBrush(ColorPen), FindRectangle((Point)TargetCell));
-            PBCanvas.Refresh();
+            Graphic.FillRectangle(new SolidBrush(ColorPen), FindRectangle((Point)TargetCell));            
         }
 
         public void SetColors(List<Color> colors)
@@ -187,8 +173,7 @@ namespace GameBoard2D_Jker0
         private void UpdateGrid()
         {
             Graphic.Clear(Colors[0]);
-            DrawGrid();
-            PBCanvas.Refresh();
+            DrawGrid();            
 
         }
 

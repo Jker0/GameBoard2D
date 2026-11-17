@@ -16,7 +16,9 @@ namespace GameBoard2D_Jker0
         public Form1()
         {
             InitializeComponent();
-            BoardCanvas = new BoardCanvas(this.pictureBox1);
+
+            pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            BoardCanvas = new BoardCanvas(pictureBox1.Image);
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
@@ -27,11 +29,13 @@ namespace GameBoard2D_Jker0
         private void ClearBt_Click(object sender, EventArgs e)
         {
             BoardCanvas.ClearCanvas();
+            pictureBox1.Refresh();
         }
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
             BoardCanvas.DrawCellByPoint(e.Location, 2);
+            pictureBox1.Refresh();
         }
 
         private void TestBt_Click(object sender, EventArgs e)
@@ -44,11 +48,13 @@ namespace GameBoard2D_Jker0
                 }
 
             BoardCanvas.UpdateCanvas();
+            pictureBox1.Refresh();
         }
 
         private void RefreshBt_Click(object sender, EventArgs e)
         {
             BoardCanvas.RefreshCanvas();
+            pictureBox1.Refresh();
         }
     }
 }
