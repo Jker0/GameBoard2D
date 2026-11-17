@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace BoardCanvas_Jker0_Lib
 {
-    internal class BoardCanvas : IEnumerable
+    public class BoardCanvas : IEnumerable
     {
         private int CELL_SIZE_PIXELS = 30;                    // Размер клетки игрового поля, в пикселях
         private int PEN_SIZE_PIXELS = 2;                      // Размер карандаша рисующего сетку
