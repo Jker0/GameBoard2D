@@ -57,6 +57,14 @@ namespace BoardCanvas_Jker0_Lib
             set { Cells[i, j] = value; }
         }
 
+        public int GetLength(int i)
+        {
+            if (i > 1)
+                throw new ArgumentOutOfRangeException();
+
+            return Cells.GetLength(i);
+        }
+
         public IEnumerator GetEnumerator() => Cells.GetEnumerator();
 
         public void UpdateCanvas()
@@ -113,6 +121,19 @@ namespace BoardCanvas_Jker0_Lib
                 return;
 
             Cells[TargetCell.Y, TargetCell.X] = color;
+
+            Graphic.FillRectangle(new SolidBrush(ColorPen), FindRectangle((Point)TargetCell));
+        }
+
+        public void MarkCellByPoint(Point point)
+        {
+            Point TargetCell = FindCell(point);
+            if (TargetCell.X == -1 || TargetCell.Y == -1)
+                return;
+
+            Cells[TargetCell.Y, TargetCell.X] = Cells[TargetCell.Y, TargetCell.X] == 0 ? 1 : 0;
+
+            Color ColorPen = getColor(Cells[TargetCell.Y, TargetCell.X]);
 
             Graphic.FillRectangle(new SolidBrush(ColorPen), FindRectangle((Point)TargetCell));
         }

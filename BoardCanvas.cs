@@ -62,6 +62,14 @@ namespace GameBoard2D_Jker0
             set { Cells[i, j] = value; }
         }
 
+        public int GetLength(int i)
+        {
+            if (i > 1)
+                throw new ArgumentOutOfRangeException();
+
+            return Cells.GetLength(i);
+        }
+
         public IEnumerator GetEnumerator() => Cells.GetEnumerator();
 
         public void UpdateCanvas()
