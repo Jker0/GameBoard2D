@@ -130,6 +130,19 @@ namespace GameBoard2D_Jker0
             Graphic.FillRectangle(new SolidBrush(ColorPen), FindRectangle((Point)TargetCell));            
         }
 
+        public void MarkCellByPoint(Point point)
+        {
+            Point TargetCell = FindCell(point);
+            if (TargetCell.X == -1 || TargetCell.Y == -1)
+                return;
+
+            Cells[TargetCell.Y, TargetCell.X] = Cells[TargetCell.Y, TargetCell.X] == 0 ? 1 : 0;
+
+            Color ColorPen = getColor(Cells[TargetCell.Y, TargetCell.X]);
+
+            Graphic.FillRectangle(new SolidBrush(ColorPen), FindRectangle((Point)TargetCell));
+        }
+
         public void SetColors(List<Color> colors)
         {
             if (colors.Count <= 2)
